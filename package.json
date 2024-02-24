@@ -1,7 +1,7 @@
 {
-  "name": "commit-chronicles",
+  "name": "commit-chronicles-post-commit-script",
   "version": "1.0.0",
-  "description": "Post commit hook that captures commit, author, and patch level changes",
+  "description": "A post commit hook that captures commit, author, and patch level changes.",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest"
