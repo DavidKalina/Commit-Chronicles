@@ -1,4 +1,6 @@
-# Developer-Chronicles
+# Commit Chronicles Roadmap + Diagrams
+
+## Gantt Chart
 
 ```mermaid
 gantt
