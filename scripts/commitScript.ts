@@ -23,7 +23,11 @@ async function getCommitData() {
   };
 }
 
-async function sendToServer(commitData: { hash: string; message: string; author: string }) {
+async function sendToServer(commitData: {
+  hash: string;
+  message: string;
+  author: string;
+}) {
   console.log("Sending commit data to server:", commitData);
   // Placeholder for server communication logic using Bun.fetch()
 }
