@@ -6,16 +6,20 @@ async function getCommitData() {
   const messageProc = Bun.spawn(["git", "log", "-1", "--pretty=%B"]);
   const authorProc = Bun.spawn(["git", "log", "-1", "--pretty=%an"]);
 
+  const changesProc = Bun.spawn(["git", "show", "--pretty=format:", "HEAD"]);
+
   // Use the Response object to efficiently handle the stdout stream
   const hash = await new Response(hashProc.stdout).text();
   const message = await new Response(messageProc.stdout).text();
   const author = await new Response(authorProc.stdout).text();
+  const changes = await new Response(changesProc.stdout).text();
 
   // Trim the output to remove any trailing newline
   return {
     hash: hash.trim(),
     message: message.trim(),
     author: author.trim(),
+    changes: changes.trim(),
   };
 }
 
