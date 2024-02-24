@@ -1,4 +1,4 @@
-# Commit-Chronicles
+# Commit Chronicles Roadmap
 
 ```mermaid
 gantt
