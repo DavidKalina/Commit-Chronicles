@@ -1,4 +1,4 @@
-# Developer-Chronicles
+# Commit-Chronicles
 
 ```mermaid
 gantt
