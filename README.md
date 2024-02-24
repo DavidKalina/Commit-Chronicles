@@ -1,5 +1,7 @@
 # Commit Chronicles Roadmap + Diagrams
 
+## Gantt Chart
+
 ```mermaid
 gantt
     dateFormat  YYYY-MM-DD
