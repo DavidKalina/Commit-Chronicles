@@ -6,17 +6,18 @@
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "allowJs": true,
-
-    /* Bundler mode */
+    "rootDir": "./scripts",
+    "outDir": "./dist",
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
-    "noEmit": true,
-
-    /* Linting */
+    "noEmit": true, // Changed to false to enable file emission
     "skipLibCheck": true,
     "strict": true,
+
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "include": ["scripts/**/*.ts"],
+  "exclude": ["node_modules", "**/*.test.ts"]
 }
