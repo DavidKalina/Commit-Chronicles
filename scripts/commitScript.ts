@@ -5,6 +5,8 @@ import { spawn } from "child_process";
 import dotenv from "dotenv";
 import path from "path";
 dotenv.config({ path: path.join(__dirname, ".env") });
+
+console.log("PATH_TO_ENV", path.join(__dirname, ".env"));
 interface CommitData {
   hash: string;
   message: string;
