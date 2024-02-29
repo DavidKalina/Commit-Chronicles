@@ -35,6 +35,7 @@ async function sendToServer(commitData: CommitData) {
   try {
     await axios.post(`${process.env.API_URL}/generateEntry`, commitData);
   } catch (error: any) {
+    console.log(error);
     console.error("Failed to create entry:", error.response.data);
   }
 }
