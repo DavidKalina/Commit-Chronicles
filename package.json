@@ -1,6 +1,6 @@
 {
   "name": "@julius-gamble/commit-chronicles-post-commit-script",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A post commit hook that captures commit, author, and patch level changes.",
   "type": "module",
   "publishConfig": {
@@ -19,6 +19,7 @@
     "build": "bun build --target=node ./scripts/commitScript.ts --outdir ./dist"
   },
   "dependencies": {
-    "axios": "^1.6.7"
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.5"
   }
 }

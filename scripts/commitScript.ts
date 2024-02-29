@@ -2,6 +2,8 @@
 // scripts/commitScript.ts
 import axios from "axios";
 import { spawn } from "child_process";
+import dotenv from "dotenv";
+dotenv.config();
 
 interface CommitData {
   hash: string;
