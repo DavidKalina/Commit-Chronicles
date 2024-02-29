@@ -33,8 +33,7 @@ async function getCommitData() {
 
 async function sendToServer(commitData: CommitData) {
   try {
-    const res = await axios.post(`${process.env.API_URL}/generateEntry`, commitData);
-    console.log("Entry created successfully:", res.data);
+    await axios.post(`${process.env.API_URL}/generateEntry`, commitData);
   } catch (error: any) {
     console.error("Failed to create entry:", error.response.data);
   }
