@@ -3,8 +3,8 @@
 import axios from "axios";
 import { spawn } from "child_process";
 import dotenv from "dotenv";
-dotenv.config();
-
+import path from "path";
+dotenv.config({ path: path.join(__dirname, ".env") });
 interface CommitData {
   hash: string;
   message: string;
