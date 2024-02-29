@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 // scripts/commitScript.ts
+import axios from "axios";
 import { spawn } from "child_process";
 
 interface CommitData {
@@ -31,20 +32,11 @@ async function getCommitData() {
 }
 
 async function sendToServer(commitData: CommitData) {
-  const res = await fetch(`${process.env.API_URL}/generateEntry`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(commitData),
-  });
-
-  const parsedResponse = await res.json();
-
-  if (res.status === 200) {
-    console.log("Entry created successfully:", parsedResponse);
-  } else {
-    console.error("Failed to create entry:", parsedResponse);
+  try {
+    const res = await axios.post(`${process.env.API_URL}/generateEntry`, commitData);
+    console.log("Entry created successfully:", res.data);
+  } catch (error: any) {
+    console.error("Failed to create entry:", error.response.data);
   }
 }
 
