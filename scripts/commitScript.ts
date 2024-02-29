@@ -31,8 +31,21 @@ async function getCommitData() {
 }
 
 async function sendToServer(commitData: CommitData) {
-  console.log("Sending commit data to server:", commitData);
-  // Implementation for sending data to server goes here
+  const res = await fetch(`${process.env.API_URL}/generateEntry`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(commitData),
+  });
+
+  const parsedResponse = await res.json();
+
+  if (res.status === 200) {
+    console.log("Entry created successfully:", parsedResponse);
+  } else {
+    console.error("Failed to create entry:", parsedResponse);
+  }
 }
 
 async function main() {
