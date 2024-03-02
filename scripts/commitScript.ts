@@ -34,7 +34,7 @@ async function getCommitData() {
 const apiUrl = process.argv[2];
 
 async function sendToServer(commitData: CommitData) {
-  console.log(apiUrl);
+  console.log(`${apiUrl}/generateEntry`);
   if (!apiUrl) {
     console.error("API URL not provided. Usage: commit-script <API_URL>");
     process.exit(1);
@@ -42,6 +42,7 @@ async function sendToServer(commitData: CommitData) {
   try {
     await axios.post(`${apiUrl}/generateEntry`, commitData);
   } catch (error: any) {
+    console.log(error);
     console.error("Failed to create entry:", error.message);
   }
 }
