@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+// scripts/setupCommitScript.ts
 const { execSync } = require("child_process");
 const { writeFileSync, existsSync, mkdirSync } = require("fs");
 const { join } = require("path");
