@@ -31,12 +31,17 @@ async function getCommitData() {
   return { hash, message, author, changes };
 }
 
+const apiUrl = process.argv[2];
+
 async function sendToServer(commitData: CommitData) {
+  if (!apiUrl) {
+    console.error("API URL not provided. Usage: commit-script <API_URL>");
+    process.exit(1);
+  }
   try {
-    await axios.post(`${process.env.API_URL}/generateEntry`, commitData);
+    await axios.post(`${apiUrl}/generateEntry`, commitData);
   } catch (error: any) {
-    console.log(error);
-    console.error("Failed to create entry:", error.response.data);
+    console.error("Failed to create entry:", error.message);
   }
 }
 
