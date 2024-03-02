@@ -13,10 +13,11 @@
     "typescript": "^5.0.0"
   },
   "bin": {
-    "commit-script": "./dist/commitScript.js"
+    "commit-script": "./dist/commitScript.js",
+    "setup-script": "./dist/setupCommitScript.js"
   },
   "scripts": {
-    "build": "bun build --target=node ./scripts/commitScript.ts --outdir ./dist",
+    "build": "bun build --target=node ./scripts/*.ts --outdir ./dist",
     "release": "npm run build && npm version patch && npm publish"
   },
   "dependencies": {
