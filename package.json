@@ -13,7 +13,8 @@
     "typescript": "^5.0.0"
   },
   "bin": {
-    "commit-chronicles-setup": "./dist/setup.js"
+    "setup": "./dist/setup.js",
+    "post-commit": "./dist/commitScript.js"
   },
   "scripts": {
     "build": "bun build --target=node ./scripts/*.ts --outdir ./dist",
