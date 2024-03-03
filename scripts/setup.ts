@@ -7,14 +7,19 @@ import { join } from "path";
 async function main(apiUrl: string): Promise<void> {
   console.log("Configuring project...");
 
-  // Step 1: Setup Husky
-  if (!existsSync(".husky")) {
-    console.log("Installing Husky...");
-    execSync("npx husky install", { stdio: "inherit" });
+  // Install Husky and initialize it
+  console.log("Installing Husky...");
+  execSync("npm install husky --save-dev", { stdio: "inherit" });
+  console.log("Initializing Husky...");
+  execSync("npx husky init", { stdio: "inherit" });
+
+  // Create .husky directory if not exists (husky init will create, but just in case)
+  const huskyDir = join(process.cwd(), ".husky");
+  if (!existsSync(huskyDir)) {
+    mkdirSync(huskyDir, { recursive: true });
   }
 
   // Step 2: Create set-env.sh with API_URL
-  const huskyDir = join(process.cwd(), ".husky");
   const setEnvPath = join(huskyDir, "set-env.sh");
   console.log("Creating set-env.sh...");
   writeFileSync(setEnvPath, `#!/bin/sh\nexport API_URL="${apiUrl}"\n`);
@@ -29,17 +34,22 @@ async function main(apiUrl: string): Promise<void> {
   }
 
   // Step 4: Configure post-commit hook
-  const postCommitHookPath = join(huskyDir, "post-commit");
   console.log("Configuring post-commit hook...");
-  writeFileSync(
-    postCommitHookPath,
-    `#!/bin/sh
+  const postCommitHookPath = join(huskyDir, "post-commit");
+  if (!existsSync(postCommitHookPath)) {
+    // Check if post-commit hook already exists
+    writeFileSync(
+      postCommitHookPath,
+      `#!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 . "$(dirname "$0")/set-env.sh"
 npx commit-script
 `
-  );
-  chmodSync(postCommitHookPath, "755");
+    );
+    chmodSync(postCommitHookPath, "755");
+  } else {
+    console.log("post-commit hook already exists.");
+  }
 
   console.log("Setup complete.");
 }
