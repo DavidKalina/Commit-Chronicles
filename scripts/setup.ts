@@ -1,63 +1,55 @@
 #!/usr/bin/env node
+// scripts/setup.ts
 import { execSync } from "child_process";
 import { writeFileSync, appendFileSync, chmodSync, existsSync, mkdirSync, readFileSync } from "fs";
 import { join } from "path";
 
-function setupProject(apiUrl: string): void {
-  console.log("Starting setup...");
+async function main(apiUrl: string): Promise<void> {
+  console.log("Configuring project...");
 
-  // Install Husky
-  console.log("Installing Husky...");
-  execSync("npm install husky --save-dev", { stdio: "inherit" });
-
-  // Initialize Husky
-  console.log("Initializing Husky...");
-  execSync("npx husky install", { stdio: "inherit" });
-
-  const huskyDir = join(process.cwd(), ".husky");
-  if (!existsSync(huskyDir)) {
-    mkdirSync(huskyDir, { recursive: true });
+  // Step 1: Setup Husky
+  if (!existsSync(".husky")) {
+    console.log("Installing Husky...");
+    execSync("npx husky install", { stdio: "inherit" });
   }
 
-  // Configure post-commit hook to use your script
-  console.log("Configuring post-commit hook...");
-  const postCommitPath = join(huskyDir, "post-commit");
-  const postCommitContent = `#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-# Run commit-script with API_URL
-npx commit-script "$API_URL"
-`;
-  writeFileSync(postCommitPath, postCommitContent);
-  chmodSync(postCommitPath, "755");
-
-  // Create set-env.sh with API_URL
-  console.log("Creating set-env.sh...");
+  // Step 2: Create set-env.sh with API_URL
+  const huskyDir = join(process.cwd(), ".husky");
   const setEnvPath = join(huskyDir, "set-env.sh");
-  const setEnvContent = `#!/bin/sh
-export API_URL="${apiUrl}"
-`;
-  writeFileSync(setEnvPath, setEnvContent);
+  console.log("Creating set-env.sh...");
+  writeFileSync(setEnvPath, `#!/bin/sh\nexport API_URL="${apiUrl}"\n`);
   chmodSync(setEnvPath, "755");
 
-  // Add set-env.sh to .gitignore
-  console.log("Updating .gitignore...");
+  // Step 3: Add set-env.sh to .gitignore
   const gitignorePath = join(process.cwd(), ".gitignore");
-  let gitignoreContent = "";
-  if (existsSync(gitignorePath)) {
-    gitignoreContent = readFileSync(gitignorePath, "utf8");
-  }
+  let gitignoreContent = existsSync(gitignorePath) ? readFileSync(gitignorePath, "utf8") : "";
   if (!gitignoreContent.includes(".husky/set-env.sh")) {
-    appendFileSync(gitignorePath, "\n# Husky Environment Variables\n.husky/set-env.sh\n");
+    console.log("Updating .gitignore...");
+    appendFileSync(gitignorePath, "\n# Husky\n.husky/set-env.sh\n");
   }
 
-  console.log("Setup complete. Husky and commit-script configured.");
+  // Step 4: Configure post-commit hook
+  const postCommitHookPath = join(huskyDir, "post-commit");
+  console.log("Configuring post-commit hook...");
+  writeFileSync(
+    postCommitHookPath,
+    `#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+. "$(dirname "$0")/set-env.sh"
+npx commit-script
+`
+  );
+  chmodSync(postCommitHookPath, "755");
+
+  console.log("Setup complete.");
 }
 
 const apiUrl: string = process.argv[2];
 if (!apiUrl) {
-  console.error("Usage: npx ts-node setup.ts <API_URL>");
+  console.error(
+    "Error: API_URL argument missing.\nUsage: npx @julius-gamble/commit-chronicles-setup <API_URL>"
+  );
   process.exit(1);
 }
 
-setupProject(apiUrl);
+main(apiUrl).catch(console.error);
